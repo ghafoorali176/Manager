@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #=== setup ===
-rm-rf /etc/UDPCustom
+rm -rf /etc/UDPCustom
 mkdir -p /etc/UDPCustom
 udp_dir='/etc/UDPCustom'
 udp_file='/etc/UDPCustom/udp-custom'
