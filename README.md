@@ -8,7 +8,7 @@ UDP (User Datagram Protocol) is a network communication protocol that operates o
 
 ---
 # Supported OS
-- ubuntu 20.04 [x86_64] ✅
+- ubuntu 20.04 [x86_64] ✅ _(recommended)_
 - [arm] ❌
 
 ## Install

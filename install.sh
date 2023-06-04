@@ -1,6 +1,9 @@
 #!/bin/bash
 
 #=== setup ===
+cd
+rm -rf /root/udp
+mkdir -p /root/udp
 rm -rf /etc/UDPCustom
 mkdir -p /etc/UDPCustom
 udp_dir='/etc/UDPCustom'
@@ -46,7 +49,9 @@ else
 
   # [+clean up+]
   rm -rf $udp_file
+  rm -rf /root/udp
   rm -rf /etc/UDPCustom/udp-custom
+  rm -rf /etc/UDPCustom/udp-request
   rm -rf /etc/limiter.sh
   rm -rf /etc/UDPCustom/limiter.sh
   rm -rf /etc/UDPCustom/module
@@ -56,14 +61,19 @@ else
   rm -rf /etc/autostart.service
   rm -rf /etc/autostart
   sudo systemctl stop autostart.service
+  sudo systemctl stop udp-custom.service
+  sudo systemctl stop udp-request.service
 
  # [+get files ⇣⇣⇣+]
   source <(curl -sSL 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/module') &>/dev/null
   wget -O /etc/UDPCustom/module 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/module' &>/dev/null
-  wget -O /etc/UDPCustom/udp-custom 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/bin/udp-custom' &>/dev/null
-  chmod +x /etc/UDPCustom/udp-custom
   chmod +x /etc/UDPCustom/module
-  bash /etc/UDPCustom/udp-custom 
+
+  wget "https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/bin/udp-custom-linux-amd64" -O /root/udp/udp-custom &>/dev/null
+  wget "https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/bin/udp-request-linux-amd64" -O /root/udp/request &>/dev/null
+  chmod +x /root/udp/udp-custom
+  chmod +x /root/udp/udp-request
+
   wget -O /etc/limiter.sh 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/limiter.sh'
   chmod +x /etc/limiter.sh
   cp /etc/limiter.sh /etc/UDPCustom
@@ -72,6 +82,7 @@ else
   wget -O /etc/autostart 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/autostart'
   chmod +x /etc/autostart
   cp /etc/autostart /etc/UDPCustom
+
   # [+udpgw+]
   wget -O /etc/udpgw 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/udpgw'
   chmod +x /etc/udpgw
@@ -79,12 +90,33 @@ else
 
   # [+service+]
   wget -O /etc/autostart.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/autostart.service'
-  chmod +x /etc/autostart.service
-  cp /etc/autostart /etc/systemd/system/
-  chmod 640 /etc/systemd/system/autostart.service
-  sudo systemctl daemon-reload
-  sudo systemctl enable autostart.service
-  sudo systemctl start autostart.service
+  wget -O /etc/udp-custom.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udp-custom.service'
+  wget -O /etc/udp-request.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udp-request.service'
+
+  cp /etc/autostart.service /etc/systemd/system/
+  cp /etc/udp-custom.service /etc/systemd/system/
+  cp /etc/udp-request.service /etc/systemd/system/
+
+  sudo chmod 640 /etc/systemd/system/autostart.service
+  sudo chmod 640 /etc/systemd/system/udp-custom.service
+  sudo chmod 640 /etc/systemd/system/udp-request.service
+
+  sudo systemctl daemon-reload &>/dev/null
+  sudo systemctl enable autostart.service &>/dev/null
+  sudo systemctl start autostart.service &>/dev/null
+  sudo systemctl enable udp-custom.service &>/dev/null
+  sudo systemctl start udp-custom.service &>/dev/null
+  sudo systemctl enable udp-request.service &>/dev/null
+  sudo systemctl start udp-request.service &>/dev/null
+
+  # [+config+]
+  wget "https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/config.json" -O /root/udp/config.json &>/dev/null
+  chmod 644 /root/udp/config.json
+
+  # [change to time UTC +0]
+  echo "Change to time UTC +0"
+  echo "for Africa/Accra"
+  ln -fs /usr/share/zoneinfo/Africa/Accra /etc/localtime
 
   # [+menu+]
   wget -O /usr/bin/udp 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/udp' 
