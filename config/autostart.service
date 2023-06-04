@@ -1,0 +1,16 @@
+[Unit]
+Description=UDPGW Enabler by mr.vybes
+
+Wants=network.target
+After=syslog.target network-online.target
+
+[Service]
+User=root
+Type=simple
+ExecStart=/etc/UDPCustom/autostart
+WorkingDirectory=/etc/UDPCustom/
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -43,12 +43,21 @@ else
   print_center -ama "A Compatible OS/Environment Found"
   print_center -ama " > Installation begins...! <"
   sleep 3
+
+  # [+clean up+]
   rm -rf $udp_file
   rm -rf /etc/UDPCustom/udp-custom
   rm -rf /etc/limiter.sh
   rm -rf /etc/UDPCustom/limiter.sh
   rm -rf /etc/UDPCustom/module
   rm -rf /usr/bin/udp
+  rm -rf /etc/UDPCustom/autostart.service
+  rm -rf /etc/UDPCustom/autostart
+  rm -rf /etc/autostart.service
+  rm -rf /etc/autostart
+  sudo systemctl stop autostart.service
+
+ # [+get files ⇣⇣⇣+]
   source <(curl -sSL 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/module') &>/dev/null
   wget -O /etc/UDPCustom/module 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/module' &>/dev/null
   wget -O /etc/UDPCustom/udp-custom 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/bin/udp-custom' &>/dev/null
@@ -58,6 +67,26 @@ else
   wget -O /etc/limiter.sh 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/limiter.sh'
   chmod +x /etc/limiter.sh
   cp /etc/limiter.sh /etc/UDPCustom
+
+  # [+auto-start+]
+  wget -O /etc/autostart 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/autostart'
+  chmod +x /etc/autostart
+  cp /etc/autostart /etc/UDPCustom
+  # [+udpgw+]
+  wget -O /etc/udpgw 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/udpgw'
+  chmod +x /etc/udpgw
+  cp /etc/udpgw /bin/udpgw
+
+  # [+service+]
+  wget -O /etc/autostart.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/autostart.service'
+  chmod +x /etc/autostart.service
+  cp /etc/autostart /etc/systemd/system/
+  chmod 640 /etc/systemd/system/autostart.service
+  sudo systemctl daemon-reload
+  sudo systemctl enable autostart.service
+  sudo systemctl start autostart.service
+
+  # [+menu+]
   wget -O /usr/bin/udp 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/udp' 
   chmod +x /usr/bin/udp
   ufw disable &>/dev/null

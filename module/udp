@@ -698,7 +698,7 @@ quit_exclude(){
     iniciar=1
   fi
   if [[ $option = $a ]]; then
-    sed -i "s/$exclude //" /etc/systemd/system/udp-custom.service
+    sed -i "s/$exclude /" /etc/systemd/system/udp-custom.service
     print_center -ama "${a91:-Se quito todos los puertos excluidos}"
   else
     let option--
@@ -721,7 +721,7 @@ quit_exclude(){
 
 menu_udp() {
   title "\033[3;40m${a10:-• UDP Custom Manager} by @voltssh •"
-  print_center -ama ' UDP-Custom Binary by ePro Dev. Team'
+  print_center -ama ' Version: 1.7b'
   print_center -ama ' Client for Android : HTTP Custom'
   msg -bar
 
@@ -754,12 +754,12 @@ menu_udp() {
     echo " $(msg -verd "[6]") $(msg -verm2 '>') $(msg -verm3 "${a10:-User Details}")"
     echo " $(msg -verd "[7]") $(msg -verm2 '>') $(msg -teal "${a11:-Limit Accounts}")"
     msg -bar3
-    print_center -ama "${a12:-PORT EXCLUSION}"
+    print_center -ama "${a12:-Port Exclusion List}"
     msg -bar3
-    echo " $(msg -verd "[8]") $(msg -verm2 '>') $(msg -verd "${a13:-ADD PORT TO THE EXCLUSION LIST}")"
+    echo " $(msg -verd "[8]") $(msg -verm2 '>') $(msg -verd "${a13:-Add Port To The Exclusion List}")"
     num=8
     if [[ ! $port = "" ]]; then
-      echo " $(msg -verd "[9]") $(msg -verm2 '>') $(msg -verm2 "${a14:-REMOVE PORT FROM THE EXCLUSION LIST}")"
+      echo " $(msg -verd "[9]") $(msg -verm2 '>') $(msg -verm2 "${a14:-Port Exclusion List}")"
       num=9
     fi
     msg -bar3
