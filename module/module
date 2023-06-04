@@ -112,6 +112,12 @@ back() {
   msg -bar
 }
 
+exit2home() {
+  msg -bar
+  echo -ne "$(msg -verd " [0]") $(msg -verm2 ">") " && msg -bra "\033[1;41m${a_back:-EXIT}"
+  msg -bar
+}
+
 inst() {
   print_center -verm2 "${a9:-❗ Please goto Github and reinstall the tool}"
   print_center -verm2 "${a9:-❗ Please goto Github and reinstall the tool}"
@@ -136,9 +142,10 @@ menu_func() {
 }
 
 # 🔹Numerical selection option
-selection_fun() {
+function selection_fun() {
   local selection="null"
   local range
+
   if [[ -z $2 ]]; then
     option=$1
     col="-nazu"
@@ -146,14 +153,35 @@ selection_fun() {
     option=$2
     col=$1
   fi
-  for ((i = 0; i <= $option; i++)); do range[$i]="$i "; done
-  while [[ ! $(echo ${range[*]} | grep -w "$selection") ]]; do
-    msg "$col" " ${a_selection_fun:-Select an option}: " >&2
+
+  # Check if option is too large
+  if (( option > 13 )); then
+    echo "Option is too large. Please enter a smaller number."
+    return 1
+  fi
+
+  # Initialize range array
+  range=( $(seq 0 $option) )
+
+  while true; do
+    # Ask for selection
+    a_selection_fun="Please enter your selection:"
+    msg "$col" "${a_selection_fun} " >&2
     read selection
+
+    # Check if input is within range
+    if [[ $selection == [0-$option] ]]; then
+      break
+    fi
+
+    # Handle invalid input
+    echo "Invalid input, please enter a number between 0 and $option."
     tput cuu1 >&2 && tput dl1 >&2
   done
+
   echo $selection
 }
+
 
 in_option() {
   unset option

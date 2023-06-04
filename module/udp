@@ -1,8 +1,8 @@
 #!/bin/bash
 
 udp_dir='/etc/UDPCustom'
-source $udp_dir/module
-#source ./module/module
+#source $udp_dir/module
+source ./module/module
 
 public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<<"$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
 
@@ -557,7 +557,7 @@ make_service() {
 
 }
 
-uninstall_udp-manger() {
+uninstall_udp_manager() {
   title "${a32:-Uninstall UDP-Manager & Binaries}"
   read -rp " $(msg -ama "${a33:-Do you wish to continue? [Y/n]}:") " -e -i Y UNINS
   [[ $UNINS != @(Y|y|S|s) ]] && return
@@ -801,7 +801,7 @@ menu_udp_request() {
   7) limiter ;;
   8) add_exclude ;;
   9) quit_exclude ;;
-  0) return 1 ;;
+  0) menu_main ;;
   esac
 }
 
@@ -853,40 +853,52 @@ menu_udp_custom() {
   5) block_user ;;
   6) detail_user ;;
   7) limiter ;;
-  0) return 1 ;;
+  0) menu_main ;;
   esac
 }
 
-# [MAIN MENU]
+# [MAIN MENU]A
 menu_main() {
   title "\033[3;40m${a10:-• UDP Custom | UDP Request Manager} •"
   print_center -ama ' Version: 2.0b'
   print_center -ama ' by @voltssh'
   msg -bar
-  ram=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
-  cpu=$(printf '%-1s' "$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')")
+
+  # calculate RAM and CPU usage
+  ram=$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')
+  cpu=$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')
+
+  # print system information
   print_center -ama " $(msg -verd 'IP:') $(msg -azu "$public_ip")  $(msg -verd 'Ram:') $(msg -azu "$ram") $(msg -verd 'CPU:') $(msg -azu "$cpu")"
   msg -bar
-    print_center -ama "${a12:-::CHOOSE UDP CORE::}"
-    msg -bar3
-    echo " $(msg -verd "[1]") $(msg -verm2 '>') $(msg -verd "${a6:-UDP Custom}")"
-    echo " $(msg -verd "[2]") $(msg -verm2 '>') $(msg -ama "${a8:-UDP Request}")"
-    msg -bar3
-    echo " $(msg -verd "[10]") $(msg -verm2 '>') $(msg -verm2 "${a3:-Uninstall UDP Manager}")"
-  back
-  
-  option=$(selection_fun $num)
 
+  # print options menu
+  print_center -ama "${a12:-CHOOSE UDP CORE}"
+  msg -bar3
+  echo " $(msg -verd "[1]") $(msg -verm2 '>') $(msg -verd "${a6:-UDP Custom}")"
+  echo " $(msg -verd "[2]") $(msg -verm2 '>') $(msg -ama "${a8:-UDP Request}")"
+  msg -bar3
+  echo " $(msg -verd "[10]") $(msg -verm2 '>') $(msg -verm2 "${a3:-Uninstall UDP Manager}")"
+  exit2home
+
+  # prompt user for option selection
+  read -p "Enter the number of your selection: " option
+
+  # handle option selection
   case $option in
-  1) menu_udp_custom ;;
-  2) menu_udp_request ;;
-  10) uninstall_udp-manger; exit;;
-  0) return 1 ;;
+  1)
+    menu_udp_custom
+    ;;
+  2)
+    menu_udp_request ;;
+  10)
+    uninstall_udp_manager
+    ;;
+  0)
+   exit ;;
   esac
 }
 
 while [[ $? -eq 0 ]]; do
   menu_main
 done
-
-#
