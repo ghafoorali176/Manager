@@ -47,10 +47,10 @@ else
   print_center -ama " ⇢ Installation begins...! <"
   sleep 3
 
-    # [change to time UTC +0]
+    # [change timezone to UTC +0]
   echo ""
-  echo " ⇢ Change to time UTC +0"
-  echo " ⇢ for Africa/Accra"
+  echo " ⇢ Change timezone to UTC +0"
+  echo " ⇢ for Africa/Accra [GH] GMT +00:00"
   ln -fs /usr/share/zoneinfo/Africa/Accra /etc/localtime
   sleep 3
 
@@ -62,11 +62,9 @@ else
   rm -rf /etc/UDPCustom/limiter.sh &>/dev/null
   rm -rf /etc/UDPCustom/module &>/dev/null
   rm -rf /usr/bin/udp &>/dev/null
-  rm -rf /etc/UDPCustom/autostart.service &>/dev/null
-  rm -rf /etc/UDPCustom/autostart &>/dev/null
-  rm -rf /etc/autostart.service &>/dev/null
-  rm -rf /etc/autostart &>/dev/null
-  systemctl stop autostart &>/dev/null
+  rm -rf /etc/UDPCustom/udpgw.service &>/dev/null
+  rm -rf /etc/udpgw.service &>/dev/null
+  systemctl stop udpgw &>/dev/null
   systemctl stop udp-custom &>/dev/null
   systemctl stop udp-request &>/dev/null
 
@@ -84,31 +82,26 @@ else
   cp /etc/limiter.sh /etc/UDPCustom
   chmod +x /etc/limiter.sh
   chmod +x /etc/UDPCustom
-
-  # [+auto-start+]
-  wget -O /etc/autostart 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/autostart'
-  chmod +x /etc/autostart
-  # cp /etc/autostart /etc/UDPCustom
-
+  
   # [+udpgw+]
   wget -O /etc/udpgw 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/udpgw'
   mv /etc/udpgw /bin
   chmod +x /bin/udpgw
 
   # [+service+]
-  wget -O /etc/autostart.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/autostart.service'
+  wget -O /etc/udpgw.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udpgw.service'
   wget -O /etc/udp-custom.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udp-custom.service'
   wget -O /etc/udp-request.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udp-request.service'
 
-  mv /etc/autostart.service /etc/systemd/system
+  mv /etc/udpgw.service /etc/systemd/system
   mv /etc/udp-custom.service /etc/systemd/system
   mv /etc/udp-request.service /etc/systemd/system
 
-  chmod 640 /etc/systemd/system/autostart.service
+  chmod 640 /etc/systemd/system/udpgw.service
 
   systemctl daemon-reload &>/dev/null
-  systemctl enable autostart &>/dev/null
-  systemctl start autostart &>/dev/null
+  systemctl enable udpgw &>/dev/null
+  systemctl start udpgw &>/dev/null
   systemctl enable udp-custom &>/dev/null
   systemctl start udp-custom &>/dev/null
   systemctl enable udp-request &>/dev/null
@@ -127,7 +120,7 @@ else
   print_center -ama "${a103:-setting up, please wait...}"
   sleep 3
   title "${a102:-Installation Successful}"
-  print_center -ama "${a103:-Type the command \nudp\n to show menu}"
+  print_center -ama "${a103:-  To show menu type: \nudp\n}"
   msg -bar
   time_reboot 5
 fi
