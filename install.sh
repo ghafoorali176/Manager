@@ -66,9 +66,9 @@ else
   rm -rf /etc/UDPCustom/autostart
   rm -rf /etc/autostart.service
   rm -rf /etc/autostart
-  sudo systemctl stop autostart.service
-  sudo systemctl stop udp-custom.service
-  sudo systemctl stop udp-request.service
+  sudo systemctl stop autostart
+  sudo systemctl stop udp-custom
+  sudo systemctl stop udp-request
 
  # [+get files ⇣⇣⇣+]
   source <(curl -sSL 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/module') &>/dev/null
@@ -81,27 +81,28 @@ else
   chmod +x /usr/bin/udp-request
 
   wget -O /etc/limiter.sh 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/limiter.sh'
-  chmod +x /etc/limiter.sh
   cp /etc/limiter.sh /etc/UDPCustom
+  chmod +x /etc/limiter.sh
+  chmod +x //etc/UDPCustom
 
   # [+auto-start+]
   wget -O /etc/autostart 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/autostart'
   chmod +x /etc/autostart
-  cp /etc/autostart /etc/UDPCustom
+  # cp /etc/autostart /etc/UDPCustom
 
   # [+udpgw+]
   wget -O /etc/udpgw 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/udpgw'
-  chmod +x /etc/udpgw
-  cp /etc/udpgw /bin
+  mv /etc/udpgw /bin
+  chmod +x /bin/udpgw
 
   # [+service+]
   wget -O /etc/autostart.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/autostart.service'
   wget -O /etc/udp-custom.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udp-custom.service'
   wget -O /etc/udp-request.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udp-request.service'
 
-  cp /etc/autostart.service /etc/systemd/system/
-  cp /etc/udp-custom.service /etc/systemd/system/
-  cp /etc/udp-request.service /etc/systemd/system/
+  mv /etc/autostart.service /etc/systemd/system/
+  mv /etc/udp-custom.service /etc/systemd/system/
+  mv /etc/udp-request.service /etc/systemd/system/
 
   sudo chmod 640 /etc/systemd/system/autostart.service
 
