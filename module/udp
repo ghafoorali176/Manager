@@ -581,6 +581,7 @@ uninstall_udp_manager() {
   rm -rf /etc/UDPCustom/autostart
   rm -rf /etc/autostart.service
   rm -rf /etc/autostart
+  rm -rf /usr/bin/udpgw
   del 1
   print_center -ama "${a34:-Uninstallation completed!}"
   rm -rf /usr/bin/udp
