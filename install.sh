@@ -66,9 +66,9 @@ else
   rm -rf /etc/UDPCustom/autostart &>/dev/null
   rm -rf /etc/autostart.service &>/dev/null
   rm -rf /etc/autostart &>/dev/null
-  sudo systemctl stop autostart &>/dev/null
-  sudo systemctl stop udp-custom &>/dev/null
-  sudo systemctl stop udp-request &>/dev/null
+  systemctl stop autostart &>/dev/null
+  systemctl stop udp-custom &>/dev/null
+  systemctl stop udp-request &>/dev/null
 
  # [+get files ⇣⇣⇣+]
   source <(curl -sSL 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/module') &>/dev/null
@@ -83,7 +83,7 @@ else
   wget -O /etc/limiter.sh 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/limiter.sh'
   cp /etc/limiter.sh /etc/UDPCustom
   chmod +x /etc/limiter.sh
-  chmod +x //etc/UDPCustom
+  chmod +x /etc/UDPCustom
 
   # [+auto-start+]
   wget -O /etc/autostart 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/autostart'
@@ -100,19 +100,19 @@ else
   wget -O /etc/udp-custom.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udp-custom.service'
   wget -O /etc/udp-request.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udp-request.service'
 
-  mv /etc/autostart.service /etc/systemd/system/
-  mv /etc/udp-custom.service /etc/systemd/system/
-  mv /etc/udp-request.service /etc/systemd/system/
+  mv /etc/autostart.service /etc/systemd/system
+  mv /etc/udp-custom.service /etc/systemd/system
+  mv /etc/udp-request.service /etc/systemd/system
 
-  sudo chmod 640 /etc/systemd/system/autostart.service
+  chmod 640 /etc/systemd/system/autostart.service
 
-  sudo systemctl daemon-reload &>/dev/null
-  sudo systemctl enable autostart &>/dev/null
-  sudo systemctl start autostart &>/dev/null
-  sudo systemctl enable udp-custom &>/dev/null
-  sudo systemctl start udp-custom &>/dev/null
-  sudo systemctl enable udp-request &>/dev/null
-  sudo systemctl start udp-request &>/dev/null
+  systemctl daemon-reload &>/dev/null
+  systemctl enable autostart &>/dev/null
+  systemctl start autostart &>/dev/null
+  systemctl enable udp-custom &>/dev/null
+  systemctl start udp-custom &>/dev/null
+  systemctl enable udp-request &>/dev/null
+  systemctl start udp-request &>/dev/null
 
   # [+config+]
   wget "https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/config.json" -O /root/udp/config.json &>/dev/null

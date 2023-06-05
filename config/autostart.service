@@ -10,7 +10,7 @@ Type=simple
 WorkingDirectory=/root
 ExecStart=/etc/autostart
 Restart=on-failure
-RestartSec=10
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
