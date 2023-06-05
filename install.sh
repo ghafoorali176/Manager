@@ -44,31 +44,31 @@ else
   clear
   echo ""
   print_center -ama "A Compatible OS/Environment Found"
-  print_center -ama " > Installation begins...! <"
+  print_center -ama " ⇢ Installation begins...! <"
   sleep 3
 
     # [change to time UTC +0]
   echo ""
-  echo "Change to time UTC +0"
-  echo "for Africa/Accra"
+  echo " ⇢ Change to time UTC +0"
+  echo " ⇢ for Africa/Accra"
   ln -fs /usr/share/zoneinfo/Africa/Accra /etc/localtime
   sleep 3
 
   # [+clean up+]
-  rm -rf $udp_file
-  rm -rf /etc/UDPCustom/udp-custom
-  rm -rf /usr/bin/udp-request
-  rm -rf /etc/limiter.sh
-  rm -rf /etc/UDPCustom/limiter.sh
-  rm -rf /etc/UDPCustom/module
-  rm -rf /usr/bin/udp
-  rm -rf /etc/UDPCustom/autostart.service
-  rm -rf /etc/UDPCustom/autostart
-  rm -rf /etc/autostart.service
-  rm -rf /etc/autostart
-  sudo systemctl stop autostart
-  sudo systemctl stop udp-custom
-  sudo systemctl stop udp-request
+  rm -rf $udp_file &>/dev/null
+  rm -rf /etc/UDPCustom/udp-custom &>/dev/null
+  rm -rf /usr/bin/udp-request &>/dev/null
+  rm -rf /etc/limiter.sh &>/dev/null
+  rm -rf /etc/UDPCustom/limiter.sh &>/dev/null
+  rm -rf /etc/UDPCustom/module &>/dev/null
+  rm -rf /usr/bin/udp &>/dev/null
+  rm -rf /etc/UDPCustom/autostart.service &>/dev/null
+  rm -rf /etc/UDPCustom/autostart &>/dev/null
+  rm -rf /etc/autostart.service &>/dev/null
+  rm -rf /etc/autostart &>/dev/null
+  sudo systemctl stop autostart &>/dev/null
+  sudo systemctl stop udp-custom &>/dev/null
+  sudo systemctl stop udp-request &>/dev/null
 
  # [+get files ⇣⇣⇣+]
   source <(curl -sSL 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/module') &>/dev/null
