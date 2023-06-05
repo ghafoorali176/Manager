@@ -19,7 +19,7 @@ sudo apt install -y dos2unix
 source <(curl -sSL 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/module')
 
 time_reboot() {
-  print_center -ama "${a92:-VPS WILL REBOOT IN} $1 ${a93:-SECONDS}"
+  print_center -ama "${a92:-System/Server Reboot In} $1 ${a93:-Seconds}"
   REBOOT_TIMEOUT="$1"
 
   while [ $REBOOT_TIMEOUT -gt 0 ]; do
@@ -45,6 +45,13 @@ else
   echo ""
   print_center -ama "A Compatible OS/Environment Found"
   print_center -ama " > Installation begins...! <"
+  sleep 3
+
+    # [change to time UTC +0]
+  echo ""
+  echo "Change to time UTC +0"
+  echo "for Africa/Accra"
+  ln -fs /usr/share/zoneinfo/Africa/Accra /etc/localtime
   sleep 3
 
   # [+clean up+]
@@ -112,11 +119,6 @@ else
   wget "https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/config.json" -O /root/udp/config.json &>/dev/null
   chmod 644 /root/udp/config.json
 
-  # [change to time UTC +0]
-  echo "Change to time UTC +0"
-  echo "for Africa/Accra"
-  ln -fs /usr/share/zoneinfo/Africa/Accra /etc/localtime
-
   # [+menu+]
   wget -O /usr/bin/udp 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/udp' 
   chmod +x /usr/bin/udp
@@ -125,8 +127,8 @@ else
   rm -rf /etc/UDPCustom/udp-custom
   print_center -ama "${a103:-setting up, please wait...}"
   sleep 3
-  title "${a102:-INSTALLATION COMPLETED}"
+  title "${a102:-Installation Successful}"
   print_center -ama "${a103:-Type the command \nudp\n to show menu}"
   msg -bar
-  time_reboot 10
+  time_reboot 5
 fi
