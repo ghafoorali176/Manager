@@ -50,7 +50,7 @@ else
   # [+clean up+]
   rm -rf $udp_file
   rm -rf /etc/UDPCustom/udp-custom
-  rm -rf /etc/UDPCustom/udp-request
+  rm -rf /usr/bin/udp-request
   rm -rf /etc/limiter.sh
   rm -rf /etc/UDPCustom/limiter.sh
   rm -rf /etc/UDPCustom/module
@@ -69,9 +69,9 @@ else
   chmod +x /etc/UDPCustom/module
 
   wget "https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/bin/udp-custom-linux-amd64" -O /root/udp/udp-custom &>/dev/null
-  wget "https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/bin/udp-request-linux-amd64" -O /root/udp/udp-request &>/dev/null
+  wget "https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/bin/udp-request-linux-amd64" -O /usr/bin/udp-request &>/dev/null
   chmod +x /root/udp/udp-custom
-  chmod +x /root/udp/udp-request
+  chmod +x /usr/bin/udp-request
 
   wget -O /etc/limiter.sh 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/limiter.sh'
   chmod +x /etc/limiter.sh

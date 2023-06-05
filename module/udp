@@ -576,7 +576,7 @@ uninstall_udp_manager() {
   rm -rf /usr/bin/udp-request
   rm -rf /root/udp/config.json
   rm -rf /etc/UDPCustom/udp-custom
-  rm -rf /etc/UDPCustom/udp-request
+  rm -rf /usr/bin/udp-request
   rm -rf /etc/UDPCustom/autostart.service
   rm -rf /etc/UDPCustom/autostart
   rm -rf /etc/autostart.service
