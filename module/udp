@@ -586,24 +586,35 @@ uninstall_udp_manager() {
   enter
 }
 
-reset() {
+reset_udp_request() {
+  if [[ $(systemctl is-active udp-request) = 'active' ]]; then
+    systemctl stop udp-request &>/dev/null
+    systemctl disable udp-request &>/dev/null
+    print_center -ama "${a35:-UDP-Request reset done!}"
+  else
+    systemctl start udp-request &>/dev/null
+    if [[ $(systemctl is-active udp-request) = 'active' ]]; then
+      systemctl enable udp-request &>/dev/null
+      print_center -verd "${a36:-UDP-Request started!}"
+    else
+      print_center -verm2 "${a37:-failed to start udp-request.service!}"
+    fi
+  fi
+  enter
+}
+
+reset_udp_custom() {
   if [[ $(systemctl is-active udp-custom) = 'active' ]]; then
     systemctl stop udp-custom &>/dev/null
     systemctl disable udp-custom &>/dev/null
-    systemctl stop udp-request &>/dev/null
-    systemctl disable udp-request &>/dev/null
     print_center -ama "${a35:-UDP-Custom reset done!}"
-    print_center -ama "${a35:-UDP-Request reset done!}"
   else
     systemctl start udp-custom &>/dev/null
     if [[ $(systemctl is-active udp-custom) = 'active' ]]; then
       systemctl enable udp-custom &>/dev/null
-      systemctl enable udp-request &>/dev/null
       print_center -verd "${a36:-UDP-Custom started!}"
-      print_center -verd "${a36:-UDP-Request started!}"
     else
       print_center -verm2 "${a37:-failed to start udp-custom.service!}"
-      print_center -verm2 "${a37:-failed to start udp-request.service!}"
     fi
   fi
   enter
@@ -779,7 +790,7 @@ menu_udp_request() {
   print_center -ama ' Tunnel App : SocksIP'
   msg -bar
 
-  if [[ $(systemctl is-active udp-custom) = 'active' ]]; then
+  if [[ $(systemctl is-active udp-request) = 'active' ]]; then
     port=$(cat /etc/systemd/system/udp-request.service | grep 'exclude')
     if [[ ! $port = "" ]]; then
       port=$(echo $port|awk '{print $4}'|cut -d '=' -f2|sed 's/,/ /g')
@@ -792,12 +803,12 @@ menu_udp_request() {
     print_center -ama " $(msg -verd 'IP:') $(msg -azu "$public_ip")  $(msg -verd 'Ram:') $(msg -azu "$ram") $(msg -verd 'CPU:') $(msg -azu "$cpu")"
     msg -bar
 
-    if [[ $(systemctl is-active udp-custom) = 'active' ]]; then
+    if [[ $(systemctl is-active udp-request) = 'active' ]]; then
       state="\e[1m\e[32m[ON]"
     else
       state="\e[1m\e[31m[OFF]"
     fi
-    echo -e " $(msg -verd "[1]") $(msg -verm2 '>') $(msg -azu "${a2:-Activate/Deactivate UDP-Custom}") $state"
+    echo -e " $(msg -verd "[1]") $(msg -verm2 '>') $(msg -azu "${a2:-Activate/Deactivate UDP-Request}") $state"
     msg -bar3
     print_center -ama "${a12:-QUICK MENU}"
     msg -bar3
@@ -820,7 +831,7 @@ menu_udp_request() {
   option=$(selection_fun $num)
 
   case $option in
-  1) reset ;;
+  1) reset_udp_request ;;
   2) new_user ;;
   3) remove_user ;;
   4) renew_user ;;
@@ -874,7 +885,7 @@ menu_udp_custom() {
   option=$(selection_fun $num)
 
   case $option in
-  1) reset ;;
+  1) reset_udp_custom ;;
   2) new_user ;;
   3) remove_user ;;
   4) renew_user ;;
