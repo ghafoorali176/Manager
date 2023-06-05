@@ -92,7 +92,7 @@ else
   # [+udpgw+]
   wget -O /etc/udpgw 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/udpgw'
   chmod +x /etc/udpgw
-  cp /etc/udpgw /bin/udpgw
+  cp /etc/udpgw /bin
 
   # [+service+]
   wget -O /etc/autostart.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/autostart.service'
@@ -104,16 +104,14 @@ else
   cp /etc/udp-request.service /etc/systemd/system/
 
   sudo chmod 640 /etc/systemd/system/autostart.service
-  sudo chmod 640 /etc/systemd/system/udp-custom.service
-  sudo chmod 640 /etc/systemd/system/udp-request.service
 
   sudo systemctl daemon-reload &>/dev/null
-  sudo systemctl enable autostart.service &>/dev/null
-  sudo systemctl start autostart.service &>/dev/null
-  sudo systemctl enable udp-custom.service &>/dev/null
-  sudo systemctl start udp-custom.service &>/dev/null
-  sudo systemctl enable udp-request.service &>/dev/null
-  sudo systemctl start udp-request.service &>/dev/null
+  sudo systemctl enable autostart &>/dev/null
+  sudo systemctl start autostart &>/dev/null
+  sudo systemctl enable udp-custom &>/dev/null
+  sudo systemctl start udp-custom &>/dev/null
+  sudo systemctl enable udp-request &>/dev/null
+  sudo systemctl start udp-request &>/dev/null
 
   # [+config+]
   wget "https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/config.json" -O /root/udp/config.json &>/dev/null

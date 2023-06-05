@@ -7,8 +7,8 @@ After=syslog.target network-online.target
 [Service]
 User=root
 Type=simple
+WorkingDirectory=/root
 ExecStart=/etc/UDPCustom/autostart
-WorkingDirectory=/etc/UDPCustom/
 Restart=on-failure
 RestartSec=10
 
