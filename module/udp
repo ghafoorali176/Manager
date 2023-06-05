@@ -1,8 +1,8 @@
 #!/bin/bash
 
 udp_dir='/etc/UDPCustom'
-#source $udp_dir/module
-source ./module/module
+source $udp_dir/module
+#source ./module/module
 
 public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<<"$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
 
@@ -743,6 +743,34 @@ quit_exclude(){
   enter
 }
 
+# [Tweak UDP Speed]
+tweak_udp_speed() {
+# WARNING!!!
+echo "A RISK TO YOUR SYSTEM"
+# Turn off TCP Timestamps to improve UDP throughput
+echo 0 > /proc/sys/net/ipv4/tcp_timestamps
+
+# Increase the maximum amount of memory available for network buffers
+echo 4194304 > /proc/sys/net/core/wmem_max
+echo 4194304 > /proc/sys/net/core/rmem_max
+
+# Increase the default network buffer sizes
+echo 16384 87380 16777216 > /proc/sys/net/ipv4/tcp_wmem
+echo 16384 87380 16777216 > /proc/sys/net/ipv4/tcp_rmem
+
+# Increase the maximum size of the receive buffer queue
+echo 4096 > /proc/sys/net/ipv4/tcp_max_syn_backlog
+
+# Increase the maximum number of open files per process
+ulimit -n 65535
+
+# Reboot networking interface
+ip link set dev ens33 down
+ip link set dev ens33 up
+
+echo "UDP speed has been improved on this Server."
+}
+
 # [UDP - Request]
 menu_udp_request() {
   title "\033[3;40m${a10:-• UDP Custom | UDP Request Manager} by @voltssh •"
@@ -878,6 +906,8 @@ menu_main() {
   echo " $(msg -verd "[1]") $(msg -verm2 '>') $(msg -verd "${a6:-UDP Custom}")"
   echo " $(msg -verd "[2]") $(msg -verm2 '>') $(msg -ama "${a8:-UDP Request}")"
   msg -bar3
+  echo " $(msg -verd "[3]") $(msg -verm2 '>') $(msg -teal "${a11:-Tweak UDP Speed $(msg -verm2 '[!Caution!]')}")"
+  msg -bar3
   echo " $(msg -verd "[10]") $(msg -verm2 '>') $(msg -verm2 "${a3:-Uninstall UDP Manager}")"
   exit2home
 
@@ -891,6 +921,8 @@ menu_main() {
     ;;
   2)
     menu_udp_request ;;
+  3)
+    tweak_udp_speed ;;
   10)
     uninstall_udp_manager
     ;;
