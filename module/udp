@@ -782,6 +782,8 @@ ip link set dev ens33 down
 ip link set dev ens33 up
 
 echo "UDP speed has been improved on this Server."
+echo "Done!"
+sleep 3
 }
 
 # [UDP - Request]
