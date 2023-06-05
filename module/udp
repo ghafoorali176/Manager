@@ -583,7 +583,9 @@ uninstall_udp_manager() {
   rm -rf /etc/autostart
   del 1
   print_center -ama "${a34:-Uninstallation completed!}"
+  rm -rf /usr/bin/udp
   enter
+  exit
 }
 
 reset_udp_request() {
