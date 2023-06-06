@@ -91,11 +91,9 @@ else
   # [+service+]
   wget -O /etc/udpgw.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udpgw.service'
   wget -O /etc/udp-custom.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udp-custom.service'
-  wget -O /etc/udp-request.service 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/udp-request.service'
-
+  
   mv /etc/udpgw.service /etc/systemd/system
   mv /etc/udp-custom.service /etc/systemd/system
-  mv /etc/udp-request.service /etc/systemd/system
 
   chmod 640 /etc/systemd/system/udpgw.service
 
@@ -104,8 +102,6 @@ else
   systemctl start udpgw &>/dev/null
   systemctl enable udp-custom &>/dev/null
   systemctl start udp-custom &>/dev/null
-  systemctl enable udp-request &>/dev/null
-  systemctl start udp-request &>/dev/null
 
   # [+config+]
   wget "https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/config.json" -O /root/udp/config.json &>/dev/null
