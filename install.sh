@@ -96,7 +96,8 @@ else
   mv /etc/udp-custom.service /etc/systemd/system
 
   chmod 640 /etc/systemd/system/udpgw.service
-
+  chmod 640 /etc/systemd/system/udp-custom.service
+  
   systemctl daemon-reload &>/dev/null
   systemctl enable udpgw &>/dev/null
   systemctl start udpgw &>/dev/null
