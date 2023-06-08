@@ -875,7 +875,7 @@ menu_udp_request() {
 # [UDP - Custom]
 menu_udp_custom() {
   title "\033[3;40m${a10:-•UDP Custom | UDP Request Manager} by @voltssh•"
-  print_center -ama ' Version: 1.7b'
+  print_center -ama ' Version: 2.1b'
   print_center -ama ' UDP CUSTOM'
   print_center -ama ' Tunnel App : HTTP Custom'
   msg -bar
