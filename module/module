@@ -223,3 +223,4 @@ export -f enter
 export -f in_option
 export -f in_option_down
 export -f del
+export -f exit2home

@@ -5,15 +5,16 @@ rm -rf /root/udp
 mkdir -p /root/udp
 rm -rf /etc/UDPCustom
 mkdir -p /etc/UDPCustom
+sudo touch /etc/UDPCustom/udp-custom
 udp_dir='/etc/UDPCustom'
 udp_file='/etc/UDPCustom/udp-custom'
-sudo touch /etc/UDPCustom/udp-custom
 
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y wget
 sudo apt install -y curl
 sudo apt install -y dos2unix
+sudo apt install -y neofetch
 
 source <(curl -sSL 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/module')
 
@@ -111,8 +112,11 @@ else
   wget -O /usr/bin/udp 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/udp' 
   chmod +x /usr/bin/udp
   ufw disable &>/dev/null
+  sudo apt-get remove --purge ufw firewalld -y
   apt remove netfilter-persistent -y
-  rm -rf /etc/UDPCustom/udp-custom
+  clear
+  echo ""
+  echo ""
   print_center -ama "${a103:-setting up, please wait...}"
   sleep 3
   title "${a102:-Installation Successful}"

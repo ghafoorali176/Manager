@@ -4,6 +4,23 @@ udp_dir='/etc/UDPCustom'
 source $udp_dir/module
 #source ./module/module
 
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Color
+RED='\033[0;31m'
+NC='\033[0m'
+GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+LIGHT='\033[0;37m'
+BGX="\033[106m"
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#information
+OK="${GREEN}[OK]${NC}"
+Error="${RED}[Mistake]${NC}"
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 request_public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<<"$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
 
 time_reboot() {
@@ -790,6 +807,8 @@ quit_exclude(){
 # [Tweak UDP Speed]
 tweak_udp_speed() {
 # WARNING!!!
+clear
+echo ""
 echo "$(msg -verm2 '>') $(msg -verm2 "${a3:-A RISK TO YOUR SYSTEM}")"
 sleep 2
 echo "$(msg -verm2 '>') $(msg -verm2 "${a8:-patching...}")"
@@ -819,6 +838,36 @@ echo "${a6:-UDP speed has been improved on this Server.}"
 echo "${a6:-Done!}"
 sleep 3
 }
+
+vps_info() {
+  ip=$(wget -qO- ipinfo.io/ip)
+  region=$(wget -qO- ipinfo.io/region)
+  isp=$(wget -qO- ipinfo.io/org)
+  timezone=$(wget -qO- ipinfo.io/timezone)
+  ossys=$(neofetch | grep "OS" | cut -d: -f2 | sed 's/ //g')
+  host=$(neofetch | grep "Host" | cut -d: -f2 | sed 's/ //g')
+  LOADCPU=$(printf '%-0.00001s' "$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')")
+  kernel=$(neofetch | grep "Kernel" | cut -d: -f2 | sed 's/ //g')
+  uptime=$(neofetch | grep "Uptime" | cut -d: -f2 | sed 's/ //g')
+  cpu=$(neofetch | grep "CPU" | cut -d: -f2 | sed 's/ //g')
+  memory=$(neofetch | grep "Memory" | cut -d: -f2 | sed 's/ //g')
+
+  clear
+  title "\033[3;40m${a10:-•UDP Custom | UDP Request Manager} by @voltssh•"
+  print_center -ama ' Version: ⇢ 2.1b'
+  print_center -ama ' VPS Info'
+  msg -bar
+  echo " "
+  echo -e "$CLAY  ⇢ IP Address :$NC $ip $NC"
+  echo -e "$CLAY  ⇢ Region :$NC $region $NC"
+  echo -e "$CLAY  ⇢ ISP :$NC $isp $NC"
+  echo -e "$CLAY  ⇢ Date :$NC $(date +%A) $(date +%m-%d-%Y)"
+  echo -e "$CLAY  ⇢ Up Time :$NC $uptime $NC"
+  echo -e "$CLAY  ⇢ CPU Load :$NC $LOADCPU $NC"
+  echo -e "$CLAY  ⇢ Memory :$NC $memory $NC"
+enter
+}
+
 
 # [UDP - Request]
 menu_udp_request() {
@@ -957,6 +1006,7 @@ menu_main() {
   echo " $(msg -verd "[2]") $(msg -verm2 '>') $(msg -ama "${a8:-UDP Request}")"
   msg -bar3
   echo " $(msg -verd "[3]") $(msg -verm2 '>') $(msg -teal "${a11:-Tweak UDP Speed $(msg -verm2 '[!Caution!]')}")"
+   echo " $(msg -verd "[4]") $(msg -verm2 '>') $(msg -teal "${a10:-VPS Info}")"
   msg -bar3
   echo " $(msg -verd "[10]") $(msg -verm2 '>') $(msg -verm2 "${a3:-Uninstall UDP Manager}")"
   exit2home
@@ -973,6 +1023,8 @@ menu_main() {
     menu_udp_request ;;
   3)
     tweak_udp_speed ;;
+  4)
+    vps_info ;;
   10)
     uninstall_udp_manager
     ;;
