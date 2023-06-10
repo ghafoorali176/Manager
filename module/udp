@@ -564,12 +564,16 @@ User=root
 WorkingDirectory=/root
 ExecStart=/usr/bin/udp-request -ip=$request_public_ip -net=$interface -mode=system
 Restart=always
-RestartSec=3s
+RestartSec=3
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
+NoNewPrivileges=true
 
 [Install]
-WantedBy=multi-user.target6
+WantedBy=multi-user.target
 EOF
 
+  systemctl enable udp-request &>/dev/null
   systemctl start udp-custom &>/dev/null
   if [[ $(systemctl is-active udp-custom) = 'active' ]]; then
     msg -verd 'OK'
