@@ -21,70 +21,83 @@ time_reboot() {
 #======= multi-login limiter =====
 
 limiter(){
+ltr() {
+    clear
+    msg -bar
 
-	ltr(){
-		clear
-		msg -bar
-		for i in `atq|awk '{print $1}'`; do
-			if [[ ! $(at -c $i|grep '/etc/limiter.sh') = "" ]]; then
-				atrm $i
-				sed -i '/etc/limiter.sh/d' /var/spool/cron/crontabs/root
-				print_center -verd "${a68:-limiter detained}"
-				enter
-				return
-			fi
-		done
-    print_center -ama "${a69:-CONFIGURE LIMITER}"
+    # Check if limiter is already running and remove from scheduled tasks if so
+    for i in $(atq | awk '{print $1}'); do
+        if [[ ! $(at -c $i | grep '/etc/limiter.sh') = "" ]]; then
+            atrm $i
+            sed -i '/etc/limiter.sh/d' /var/spool/cron/crontabs/root
+            print_center -verd "Limiter stopped"
+            enter
+            return
+        fi
+    done
+
+    # Prompt user to configure limiter
+    print_center -ama "CONFIGURE LIMITER"
     msg -bar
-    print_center -ama "${a70:-Block users when they exceed}"
-    print_center -ama "${a71:-the maximum number of connections}"
+    print_center -ama "Block users when they exceed the maximum number of connections"
     msg -bar
+
+    # Set interval for running limiter
     unset option
     while [[ -z $option ]]; do
-      msg -nama " ${a72:-Run limiter every}: "
-      read option
-      if [[ ! $option =~ $number ]]; then
+        msg -nama "Run limiter every (in minutes): "
+        read option
+        
+        if [[ ! $option =~ ^[0-9]+$ ]]; then
+            del 1
+            print_center -verm2 "Only numbers are allowed"
+            sleep 2
+            del 1
+            unset option && continue
+        elif [[ $option -le 0 ]]; then
+            del 1
+            print_center -verm2 "Minimum time is 1 minute"
+            sleep 2
+            del 1
+            unset option && continue
+        fi
+
         del 1
-        print_center -verm2 " ${a73:-Only numbers are allowed}"
-        sleep 2
-        del 1
-        unset option && continue
-      elif [[ $option -le 0 ]]; then
-        del 1
-        print_center -verm2 "${a74:-minimum time 1 minute}"
-        sleep 2
-        del 1
-        unset option && continue
-      fi
-      del 1
-      echo -e "$(msg -nama " ${a75:-Run limiter every}:") $(msg -verd "$option ${a76:-minutes}")"
-      echo "$option" > ${udp_dir}/limit
+        echo -e "$(msg -nama "Run limiter every: ") $(msg -verd "$option minutes")"
+        echo "$option" > ${udp_dir}/limit
     done
 
     msg -bar
-    print_center -ama "${a77:-Users blocked by the limiter\nwill be unlocked automatically\n(enter 0 for manual unlock)}"
+
+    # Set interval for automatically unblocking users blocked by the limiter
+    print_center -ama "Users blocked by the limiter will be unlocked automatically (enter 0 for manual unlock)"
     msg -bar
 
     unset option
     while [[ -z $option ]]; do
-      msg -nama " ${a78:-Unblock users every}: "
-      read option
-      if [[ ! $option =~ $number ]]; then
+        msg -nama "Unblock users every (in minutes): "
+        read option
+        
+        if [[ ! $option =~ ^[0-9]+$ ]]; then
+            tput cuu1 && tput dl1
+            print_center -verm2 "Only numbers are allowed"
+            sleep 2
+            tput cuu1 && tput dl1
+            unset option && continue
+        fi
+
         tput cuu1 && tput dl1
-        print_center -verm2 " ${a73:-Only numbers are allowed}"
-        sleep 2
-        tput cuu1 && tput dl1
-        unset option && continue
-      fi
-      tput cuu1 && tput dl1
-      [[ $option -le 0 ]] && echo -e "$(msg -nama " ${a79:-Unblock}:") $(msg -verd "${a80:-manual}")" || echo -e "$(msg -nama " ${a78:-Unblock users every}:") $(msg -verd "$option ${a76:-minutes}")"
-      echo "$option" > ${udp_dir}/unlimit
+        [[ $option -le 0 ]] && echo -e "$(msg -nama "Unblock: ") $(msg -verd "manual")" || echo -e "$(msg -nama "Unblock users every: ") $(msg -verd "$option minutes")"
+        echo "$option" > ${udp_dir}/unlimit
     done
-		nohup ${udp_dir}/limiter.sh &>/dev/null &
+
+    # Start limiter with new settings
+    nohup ${udp_dir}/limiter.sh &>/dev/null &
     msg -bar
-		print_center -verd "${a81:-running limiter}"
-		enter	
-	}
+    print_center -verd "Limiter started"
+    enter 
+ }
+
 
   l_exp() {
     clear
@@ -776,7 +789,10 @@ quit_exclude(){
 # [Tweak UDP Speed]
 tweak_udp_speed() {
 # WARNING!!!
-echo "A RISK TO YOUR SYSTEM"
+echo "$(msg -verm2 '>') $(msg -verm2 "${a3:-A RISK TO YOUR SYSTEM}")"
+sleep 2
+echo "$(msg -verm2 '>') $(msg -verm2 "${a8:-patching...}")"
+sleep 2
 # Turn off TCP Timestamps to improve UDP throughput
 echo 0 > /proc/sys/net/ipv4/tcp_timestamps
 
@@ -798,8 +814,9 @@ ulimit -n 65535
 ip link set dev ens33 down
 ip link set dev ens33 up
 
-echo "UDP speed has been improved on this Server."
-echo "Done!"
+sleep 2
+echo "${a6:-UDP speed has been improved on this Server.}"
+echo "${a6:-Done!}"
 sleep 3
 }
 
@@ -880,14 +897,6 @@ menu_udp_custom() {
   print_center -ama ' Tunnel App : HTTP Custom'
   msg -bar
 
-  if [[ $(systemctl is-active udp-custom) = 'active' ]]; then
-    port=$(cat /etc/systemd/system/udp-custom.service | grep 'exclude')
-    if [[ ! $port = "" ]]; then
-      port=$(echo $port|awk '{print $4}'|cut -d '=' -f2|sed 's/,/ /g')
-      print_center -ama "${a2:-EXCLUDED PORTS} $port"
-      msg -bar
-    fi
-  fi
     ram=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
     cpu=$(printf '%-1s' "$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')")
     # print_center -ama " $(msg -verd 'IP:') $(msg -azu "$request_public_ip")  $(msg -verd 'Ram:') $(msg -azu "$ram") $(msg -verd 'CPU:') $(msg -azu "$cpu")"
@@ -911,7 +920,8 @@ menu_udp_custom() {
     echo " $(msg -verd "[7]") $(msg -verm2 '>') $(msg -teal "${a11:-Limit Accounts}")"
     msg -bar3
   back
-  option=$(selection_fun $num)
+  # option=$(selection_fun $num)
+  read -p "Enter your selection: " option
 
   case $option in
   1) reset_udp_custom ;;
