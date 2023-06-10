@@ -811,8 +811,8 @@ echo 4096 > /proc/sys/net/ipv4/tcp_max_syn_backlog
 ulimit -n 65535
 
 # Reboot networking interface
-ip link set dev ens33 down
-ip link set dev ens33 up
+sudo tcpdump -i any -w ~/capture.pcap
+sudo ifdown -a && sudo ifup -a
 
 sleep 2
 echo "${a6:-UDP speed has been improved on this Server.}"
