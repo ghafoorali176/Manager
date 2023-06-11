@@ -783,9 +783,10 @@ tweak_udp_speed() {
   # WARNING!!!
   clear
   echo ""
-  echo "$(msg -verm2 '>') $(msg -verm2 "${a3:-A RISK TO YOUR SYSTEM}")"
+  msg -bar
+  echo "$(msg -verm2 "${a3:-  A RISK TO YOUR SYSTEM}")"
   sleep 2
-  echo "$(msg -verm2 '>') $(msg -verm2 "${a8:-patching...}")"
+  echo "$(msg -verm2 "${a8:-  ⇢ patching...}")"
   sleep 2
   # Turn off TCP Timestamps to improve UDP throughput
   echo 0 >/proc/sys/net/ipv4/tcp_timestamps
@@ -808,8 +809,9 @@ tweak_udp_speed() {
   sudo systemctl restart NetworkManager
 
   sleep 2
-  echo "${a6:-UDP speed has been improved on this Server.}"
-  echo "${a6:-Done!}"
+  echo "${a6:-  ⇢ UDP speed has been improved on this Server.}"
+  echo "${a6:-  ⇢ Done!}"
+  msg -bar0
   sleep 3
 }
 
@@ -842,6 +844,7 @@ vps_info() {
   echo -e "$CLAY  ⇢ Up Time :$NC $uptime $NC"
   echo -e "$CLAY  ⇢ CPU Load :$NC $LOADCPU $NC"
   echo -e "$CLAY  ⇢ Memory :$NC $memory $NC"
+  msg -bar0
   enter
 }
 
@@ -858,13 +861,14 @@ menu_udp_request() {
     if [[ ! $port = "" ]]; then
       port=$(echo $port | awk '{print $4}' | cut -d '=' -f2 | sed 's/,/ /g')
       print_center -ama "${a2:-EXCLUDED PORTS} $port"
+      msg -bar0
       msg -bar
     fi
   fi
   ram=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
   cpu=$(printf '%-1s' "$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')")
   # print_center -ama " $(msg -verd 'IP:') $(msg -azu "$request_public_ip")  $(msg -verd 'Ram:') $(msg -azu "$ram") $(msg -verd 'CPU:') $(msg -azu "$cpu")"
-  echo " $(msg -verd 'IP:') $(msg -azu "$request_public_ip")  $(msg -verd 'Ram:') $(msg -azu "$ram") $(msg -verd 'CPU:') $(msg -azu "$cpu")"
+  echo " $(msg -verd ' ⇢  IP:') $(msg -azu "$request_public_ip")  $(msg -verd 'Ram:') $(msg -azu "$ram") $(msg -verd 'CPU:') $(msg -azu "$cpu")"
   msg -bar
 
   if [[ $(systemctl is-active udp-request) == 'active' ]]; then
@@ -879,6 +883,7 @@ menu_udp_request() {
   fi
 
   echo -e " $(msg -verd "[1]") $(msg -verm2 '>') $(msg -azu "${a2:-Activate/Deactivate UDP-Request}") $state"
+  msg -bar0
   msg -bar3
   print_center -ama "${a12:-QUICK MENU}"
   msg -bar3
@@ -925,7 +930,7 @@ menu_udp_custom() {
   ram=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
   cpu=$(printf '%-1s' "$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')")
   # print_center -ama " $(msg -verd 'IP:') $(msg -azu "$request_public_ip")  $(msg -verd 'Ram:') $(msg -azu "$ram") $(msg -verd 'CPU:') $(msg -azu "$cpu")"
-  echo " $(msg -verd 'IP:') $(msg -azu "$request_public_ip")  $(msg -verd 'Ram:') $(msg -azu "$ram") $(msg -verd 'CPU:') $(msg -azu "$cpu")"
+  echo " $(msg -verd ' ⇢  IP:') $(msg -azu "$request_public_ip")  $(msg -verd 'Ram:') $(msg -azu "$ram") $(msg -verd 'CPU:') $(msg -azu "$cpu")"
   msg -bar
 
   if [[ $(systemctl is-active udp-custom) = 'active' ]]; then
@@ -934,6 +939,7 @@ menu_udp_custom() {
     state="\e[1m\e[31m[OFF]"
   fi
   echo -e " $(msg -verd "[1]") $(msg -verm2 '>') $(msg -azu "${a2:-Activate/Deactivate UDP-Custom}") $state"
+  msg -bar0
   msg -bar3
   print_center -ama "${a12:-QUICK MENU}"
   msg -bar3
@@ -946,7 +952,7 @@ menu_udp_custom() {
   msg -bar3
   back
   # option=$(selection_fun $num)
-  read -p "Enter your selection: " option
+  read -p " ⇢  Enter your selection: " option
 
   case $option in
   1) reset_udp_custom ;;
@@ -972,8 +978,8 @@ menu_main() {
   cpu=$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')
 
   # print system information
-  print_center -ama " $(msg -verd 'IP:') $(msg -azu "$request_public_ip")  $(msg -verd 'Ram:') $(msg -azu "$ram") $(msg -verd 'CPU:') $(msg -azu "$cpu")"
-  msg -bar
+  print_center -ama " $(msg -verd ' ⇢  IP:') $(msg -azu "$request_public_ip")  $(msg -verd 'Ram:') $(msg -azu "$ram") $(msg -verd 'CPU:') $(msg -azu "$cpu")"
+  msg -bar0
 
   # print options menu
   print_center -ama "${a12:-CHOOSE UDP CORE}"
@@ -988,7 +994,7 @@ menu_main() {
   exit2home
 
   # prompt user for option selection
-  read -p "Enter the number of your selection: " option
+  read -p " ⇢  Enter your selection: " option
 
   # handle option selection
   case $option in

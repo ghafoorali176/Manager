@@ -2,9 +2,9 @@
 
 case $newlang in
 en_US)
-  a_enter='Press enter to continue'
-  a_back='RETURN'
-  a_selection_fun='Select an option:'
+  a_enter=' ⇢  Press enter to continue'
+  a_back=' ⇢  RETURN'
+  a_selection_fun=' ⇢  Select an option:'
   ;;
 esac
 
@@ -50,9 +50,12 @@ msg() {
   -blu1) cor="${COLOR[9]}" && echo -e "${cor}${2}${SEMCOR}" ;;
   -verd) cor="${COLOR[2]}${NEGRITO}" && echo -e "${cor}${2}${SEMCOR}" ;;
   -bra) cor="${COLOR[0]}${NEGRITO}" && echo -e "${cor}${2}${SEMCOR}" ;;
-  -bar) cor="${COLOR[1]}===============================================" && echo -e "${SEMCOR}${cor}${SEMCOR}" ;;
+  # -bar) cor="${COLOR[1]}===============================================" && echo -e "${SEMCOR}${cor}${SEMCOR}" ;;
+  -bar) cor="${COLOR[1]}┌──────────────────────────────────────────────┐" && echo -e "${SEMCOR}${cor}${SEMCOR}" ;;
+  -bar0) cor="${COLOR[1]}└──────────────────────────────────────────────┘" && echo -e "${SEMCOR}${cor}${SEMCOR}" ;;
   -bar2) cor="${COLOR[7]}===============================================" && echo -e "${SEMCOR}${cor}${SEMCOR}" ;;
-  -bar3) cor="${COLOR[1]}-----------------------------------------------" && echo -e "${SEMCOR}${cor}${SEMCOR}" ;;
+  #-bar3) cor="${COLOR[1]}-----------------------------------------------" && echo -e "${SEMCOR}${cor}${SEMCOR}" ;;
+  -bar3) cor="${COLOR[1]} ──────────────────────────────────────────────" && echo -e "${SEMCOR}${cor}${SEMCOR}" ;;
   -bar4) cor="${COLOR[7]}-----------------------------------------------" && echo -e "${SEMCOR}${cor}${SEMCOR}" ;;
   esac
 }
@@ -90,7 +93,7 @@ title() {
   else
     print_center "$1" "$2"
   fi
-  msg -bar
+  msg -bar0
 }
 
 # completion of tasks🔹home
@@ -109,13 +112,13 @@ enter() {
 back() {
   msg -bar
   echo -ne "$(msg -verd " [0]") $(msg -verm2 ">") " && msg -bra "\033[1;41m${a_back:-GO BACK}"
-  msg -bar
+  msg -bar0
 }
 
 exit2home() {
   msg -bar
   echo -ne "$(msg -verd " [0]") $(msg -verm2 ">") " && msg -bra "\033[1;41m${a_back:-EXIT}"
-  msg -bar
+  msg -bar0
 }
 
 inst() {
@@ -156,7 +159,7 @@ function selection_fun() {
 
   # Check if option is too large
   if (( option > 13 )); then
-    echo "Option is too large. Please enter a smaller number."
+    echo " ⇢ Option is too large. Please enter a smaller number."
     return 1
   fi
 
@@ -165,7 +168,7 @@ function selection_fun() {
 
   while true; do
     # Ask for selection
-    a_selection_fun="Please enter your selection:"
+    a_selection_fun=" ⇢  Enter your selection: "
     msg "$col" "${a_selection_fun} " >&2
     read selection
 
