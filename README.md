@@ -1,5 +1,5 @@
 ## UDP Custom & UDP Request - Installer and Manager
-#### * Version ⇢ 2.1b
+#### * Version ⇢ 2.5-Lite
 ---
 UDP (User Datagram Protocol) is a network communication protocol that operates on top of IP (Internet Protocol). It is a simpler protocol compared to TCP (Transmission Control Protocol), as it aims for speed rather than reliability.
 
