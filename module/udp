@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#Version : ⇢ 2.5-Lite
 udp_dir='/etc/UDPCustom'
 source $udp_dir/module
 
@@ -584,25 +584,27 @@ uninstall_udp_manager() {
   [[ $UNINS != @(Y|y|S|s) ]] && return
   systemctl stop udp-custom &>/dev/null
   systemctl disable udp-custom &>/dev/null
-  systemctl stop udp-request &>/dev/null
-  systemctl disable udp-request &>/dev/null
-  systemctl stop autostart &>/dev/null
-  systemctl disable autostart &>/dev/null
+  # systemctl stop udp-request &>/dev/null
+  # systemctl disable udp-request &>/dev/null
+  # systemctl stop autostart &>/dev/null
+  # systemctl disable autostart &>/dev/null
   rm -rf /etc/systemd/system/udp-custom.service
-  rm -rf /etc/systemd/system/udp-request.service
-  rm -rf /etc/systemd/system/autostart.service
+  # rm -rf /etc/systemd/system/udp-request.service
+  # rm -rf /etc/systemd/system/autostart.service
   rm -rf /usr/bin/udp-custom
   rm -rf /root/udp/udp-custom
-  rm -rf /root/udp/udp-request
-  rm -rf /usr/bin/udp-request
+  # rm -rf /root/udp/udp-request
+  # rm -rf /usr/bin/udp-request
   rm -rf /root/udp/config.json
   rm -rf /etc/UDPCustom/udp-custom
-  rm -rf /usr/bin/udp-request
-  rm -rf /etc/UDPCustom/autostart.service
-  rm -rf /etc/UDPCustom/autostart
-  rm -rf /etc/autostart.service
-  rm -rf /etc/autostart
+  # rm -rf /usr/bin/udp-request
+  # rm -rf /etc/UDPCustom/autostart.service
+  # rm -rf /etc/UDPCustom/autostart
+  # rm -rf /etc/autostart.service
+  # rm -rf /etc/autostart
   rm -rf /usr/bin/udpgw
+  rm -rf /etc/systemd/system/udpgw.service
+  systemctl stop udpgw &>/dev/null
   del 1
   print_center -ama "${a34:-Uninstallation completed!}"
   rm -rf /usr/bin/udp
@@ -833,7 +835,7 @@ vps_info() {
 
   clear
   title "\033[3;40m${a10:-•UDP Custom | UDP Request Manager} by @voltssh•"
-  print_center -ama ' Version: ⇢ 2.1b'
+  print_center -ama ' Version: ⇢ 2.5-Lite'
   print_center -ama ' VPS Info'
   msg -bar
   echo " "
@@ -852,7 +854,7 @@ vps_info() {
 menu_udp_request() {
   make_service
   title "\033[3;40m${a10:-•UDP Custom | UDP Request Manager} by @voltssh•"
-  print_center -ama ' Version: ⇢ 2.1b'
+  print_center -ama ' Version: ⇢ 2.5-Lite'
   print_center -ama ' UDP REQUEST'
   print_center -ama ' Tunnel App : SocksIP'
   msg -bar
@@ -921,8 +923,9 @@ menu_udp_request() {
 
 # [UDP - Custom]
 menu_udp_custom() {
-  title "\033[3;40m${a10:-•UDP Custom | UDP Request Manager} by @voltssh•"
-  print_center -ama ' Version: 2.1b'
+  # title "\033[3;40m${a10:-•UDP Custom | UDP Request Manager} by @voltssh•"
+  title_sub "\033[3;40m${a10:-•UDP Custom Manager} by @voltssh•"
+  print_center -ama ' Version: 2.5-Lite'
   print_center -ama ' UDP CUSTOM'
   print_center -ama ' Tunnel App : HTTP Custom'
   msg -bar
@@ -968,9 +971,10 @@ menu_udp_custom() {
 
 # [MAIN MENU]A
 menu_main() {
-  title "\033[3;40m${a10:-• UDP Custom | UDP Request Manager} •"
-  print_center -ama ' Version: ⇢ 2.1b'
-  print_center -ama ' by @voltssh'
+  # title "\033[3;40m${a10:-• UDP Custom | UDP Request Manager} •"
+  main_title "\033[3;40m${a10:-• UDP Custom Manager} •"
+  print_center -ama 'Version: ⇢ 2.5-Lite'
+  print_center -ama 'by @voltssh'
   msg -bar
 
   # calculate RAM and CPU usage
@@ -985,7 +989,7 @@ menu_main() {
   print_center -ama "${a12:-CHOOSE UDP CORE}"
   msg -bar3
   echo " $(msg -verd "[1]") $(msg -verm2 '>') $(msg -verd "${a6:-UDP Custom}")"
-  echo " $(msg -verd "[2]") $(msg -verm2 '>') $(msg -ama "${a8:-UDP Request}")"
+  # echo " $(msg -verd "[2]") $(msg -verm2 '>') $(msg -ama "${a8:-UDP Request}")"
   msg -bar3
   echo " $(msg -verd "[3]") $(msg -verm2 '>') $(msg -teal "${a11:-Tweak UDP Speed $(msg -verm2 '[!Caution!]')}")"
   echo " $(msg -verd "[4]") $(msg -verm2 '>') $(msg -teal "${a10:-VPS Info}")"
@@ -1001,9 +1005,9 @@ menu_main() {
   1)
     menu_udp_custom
     ;;
-  2)
-    menu_udp_request
-    ;;
+  # 2)
+  #   menu_udp_request
+  #   ;;
   3)
     tweak_udp_speed
     ;;

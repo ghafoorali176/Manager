@@ -71,7 +71,53 @@ print_center() {
 
   while read line; do
     unset space
-    x=$(((48 - ${#line}) / 2))
+    x=$(((45 - ${#line}) / 2))
+    for ((i = 0; i < $x; i++)); do
+      space+=' '
+    done
+    space+="$line"
+    if [[ -z $2 ]]; then
+      msg -azu "$space"
+    else
+      msg "$col" "$space"
+    fi
+  done <<<$(echo -e "$text")
+}
+
+print_title() {
+  if [[ -z $2 ]]; then
+    text="$1"
+  else
+    col="$1"
+    text="$2"
+  fi
+
+  while read line; do
+    unset space
+    x=$(((53 - ${#line}) / 2))
+    for ((i = 0; i < $x; i++)); do
+      space+=' '
+    done
+    space+="$line"
+    if [[ -z $2 ]]; then
+      msg -azu "$space"
+    else
+      msg "$col" "$space"
+    fi
+  done <<<$(echo -e "$text")
+}
+
+sub_title() {
+  if [[ -z $2 ]]; then
+    text="$1"
+  else
+    col="$1"
+    text="$2"
+  fi
+
+  while read line; do
+    unset space
+    x=$(((54 - ${#line}) / 2))
     for ((i = 0; i < $x; i++)); do
       space+=' '
     done
@@ -92,6 +138,28 @@ title() {
     print_center -blu1 "$1"
   else
     print_center "$1" "$2"
+  fi
+  msg -bar0
+}
+
+main_title() {
+  clear
+  msg -bar
+  if [[ -z $2 ]]; then
+    print_title -blu1 "$1"
+  else
+    print_title "$1" "$2"
+  fi
+  msg -bar0
+}
+
+title_sub() {
+  clear
+  msg -bar
+  if [[ -z $2 ]]; then
+    sub_title -blu1 "$1"
+  else
+    sub_title "$1" "$2"
   fi
   msg -bar0
 }
