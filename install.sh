@@ -1,6 +1,6 @@
 #!/bin/bash
-
 #=== setup ===
+cd 
 rm -rf /root/udp
 mkdir -p /root/udp
 rm -rf /etc/UDPCustom
@@ -28,6 +28,7 @@ time_reboot() {
     : $((REBOOT_TIMEOUT--))
   done
   rm /home/ubuntu/install.sh
+  echo -e "\033[01;31m\033[1;33m More Updates, Follow Us On \033[1;31m(\033[1;36mTelegram\033[1;31m): \033[1;37m@voltssh\033[0m"
   reboot
 }
 
@@ -106,7 +107,7 @@ else
 
   # [+config+]
   wget "https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/config/config.json" -O /root/udp/config.json &>/dev/null
-  chmod 644 /root/udp/config.json
+  chmod +x /root/udp/config.json
 
   # [+menu+]
   wget -O /usr/bin/udp 'https://raw.githubusercontent.com/prjkt-nv404/UDP-Custom-Installer-Manager/main/module/udp' 
