@@ -11,14 +11,12 @@ UDP (User Datagram Protocol) is a network communication protocol that operates o
 
 ## Install
 ```
-sudo -s
+sudo -i
 ``` 
 ```
 wget "https://raw.githubusercontent.com/ghafoorali176/manager/main/install.sh" -O install.sh && chmod +x install.sh && ./install.sh
 ```
 
-
-## Manually
 
 ## Note: 
  * Use optional port exclude when port udp between 1-65535 already use by other udp tunnel, like badvpn, ovpn udp and other.
