@@ -923,11 +923,11 @@ menu_udp_request() {
 
 # [UDP - Custom]
 menu_udp_custom() {
-  # title "\033[3;40m${a10:-•UDP Custom | UDP Request Manager} by @voltssh•"
-  title_sub "\033[3;40m${a10:-•UDP Custom Manager} by @voltssh•"
-  print_center -ama ' Version: 2.5-Lite'
-  print_center -ama ' UDP CUSTOM'
-  print_center -ama ' Tunnel App : HTTP Custom'
+  # title "\033[3;40m${a10:-•HTTP Custom UDP | UDP Request Manager} by @ghafoorali•"
+  title_sub "\033[3;40m${a10:-•HTTP Custom UDP Manager} by @ghafoorali•"
+  print_center -ama ' Version: 9.2-Rocket'
+  print_center -ama ' HTTP CUSTOM UDP bY Ghafoor Ali'
+  print_center -ama ' USE Tunnel App : HTTP Custom'
   msg -bar
 
   ram=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
